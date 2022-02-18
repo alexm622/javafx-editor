@@ -1,0 +1,10 @@
+# a basic maven gitignore
+gitignore_basic_maven = """
+# Maven
+target
+.classpath
+.project
+.settings/
+
+#vscode
+.vscode/
