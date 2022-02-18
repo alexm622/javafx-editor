@@ -11,7 +11,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>com.alexcomeau.App</mainClass>
+          <mainClass>com.alexcomeau.LaunchHelper</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -33,7 +33,7 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>com.alexcomeau.App</mainClass>
+          <mainClass>com.alexcomeau.LaunchHelper</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -41,7 +41,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.alexcomeau.AppP</mainClass>
+              <mainClass>com.alexcomeau.LaunchHelper</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -58,7 +58,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.alexcomeau.App</mainClass>
+                  <mainClass>com.alexcomeau.LaunchHelper</mainClass>
                 </transformer>
               </transformers>
             </configuration>
