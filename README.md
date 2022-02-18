@@ -1,10 +1,12 @@
 # Alex Comeau's JavaFX editor
-## table of contents
------
+## Table of contents
    * Requirements
-     * java requirements
-     * display requirements
-   * How to build
-       *  setting up java
-       *  setting up maven
-       *  building
+   *  running
+---
+## Requirements
+Apache Maven >= 3.8.4 \
+Java JDK Version >= 17
+
+---
+## Running
+use command `mvn javafx:run` in the project root to run
