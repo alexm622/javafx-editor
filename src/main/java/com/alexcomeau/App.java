@@ -21,9 +21,9 @@ public class App extends Application {
         languages = LanguageMap.getLanguages();
         
         stage.setTitle("jfx-edit");
-        SceneBuilder sb = new SceneBuilder();
+        SceneBuilder sb = new SceneBuilder(700, 700);
 
-        stage.setScene(sb.buildScene(700, 700));
+        stage.setScene(sb.buildScene());
         stage.show();
     }
 
