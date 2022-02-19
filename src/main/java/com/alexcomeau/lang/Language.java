@@ -1,8 +1,11 @@
 package com.alexcomeau.lang;
 
+import java.util.regex.Pattern;
+
 // an example of implementation
 public interface Language {
-    public String extension = "";
-    public String[ ] keywords = {};
-    public String highlightText(String text);
+    public Pattern getPattern();
+    public String getExtension();
+    public String[] getKeywords();
+    public String getCss();
 }

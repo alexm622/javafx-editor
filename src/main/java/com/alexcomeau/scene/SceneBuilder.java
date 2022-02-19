@@ -1,13 +1,24 @@
 package com.alexcomeau.scene;
 
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
+import com.alexcomeau.App;
+import com.alexcomeau.lang.Language;
+import com.alexcomeau.lang.Styler;
 
 import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.reactfx.Subscription;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -24,12 +35,16 @@ import javafx.scene.layout.VBox;
 public class SceneBuilder {
     static TabPane tp = new TabPane();
     static ArrayList<TabObject> tabs = new ArrayList<TabObject>();
+    public static ArrayList<ExecutorService> executors = new ArrayList<ExecutorService>();
+    public static ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
     int width, height;
     static Scene scene;
-    public SceneBuilder(int width, int height){
+
+    public SceneBuilder(int width, int height) {
         this.width = width;
         this.height = height;
     }
+
     public Scene buildScene() {
         VBox vbox = new VBox();
         scene = new Scene(vbox, width, height);
@@ -39,94 +54,109 @@ public class SceneBuilder {
         return scene;
     }
 
-    private MenuBar buildMenuBar(){
+    private MenuBar buildMenuBar() {
         MenuBar menuBar = new MenuBar();
         final Menu file = new Menu("File");
-        //add open and save to file
+        // add open and save to file
         file.getItems().addAll(
                 buildMenuItem("New (Ctrl-n)", handler -> {
-                    //add a new tab
+                    // add a new tab
                     addTab("*new*");
                 }),
                 buildMenuItem("Open (ctrl-o)", handler -> {
                     MenuHandlers.addTab(this);
                 }),
                 buildMenuItem("save (ctrl-s)", handler -> {
-                    if(tabs.size() == 0){
+                    if (tabs.size() == 0) {
                         System.out.println("no tabs");
-                    }
-                    else{
+                    } else {
                         System.out.println("saving as");
-                        tabs.get(tp.getSelectionModel().getSelectedIndex()).setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
-                        if(tabs.get(tp.getSelectionModel().getSelectedIndex()).getFile() == null){
+                        tabs.get(tp.getSelectionModel().getSelectedIndex())
+                                .setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
+                        if (tabs.get(tp.getSelectionModel().getSelectedIndex()).getFile() == null) {
                             System.out.println("no file");
                             MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
-                        }
-                        else{
+                        } else {
                             System.out.println("saving");
                             MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                         }
                     }
                 }),
                 buildMenuItem("save as (ctrl-shift-s)", handler -> {
-                    if(tabs.size() == 0){
+                    if (tabs.size() == 0) {
                         System.out.println("no tabs");
-                    }
-                    else{
+                    } else {
                         System.out.println("saving as");
-                        tabs.get(tp.getSelectionModel().getSelectedIndex()).setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
+                        tabs.get(tp.getSelectionModel().getSelectedIndex())
+                                .setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
                         MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                     }
                 }),
                 buildMenuItem("close (ctrl-w)", handler -> {
-                    if(tabs.size() == 0){
-                        //exit gracefully
+                    if (tabs.size() == 0) {
+                        // exit gracefully
                         System.exit(1);
 
-                    }
-                    else{
+                    } else {
                         EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
                         tabHandler.handle(null);
                         tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
                     }
-                })
-        );
-        
+                }));
+
         menuBar.getMenus().add(file);
         return menuBar;
     }
 
-    private MenuItem buildMenuItem(String text, EventHandler<ActionEvent> handler){
+    private MenuItem buildMenuItem(String text, EventHandler<ActionEvent> handler) {
         MenuItem menuItem = new MenuItem(text);
         menuItem.setOnAction(handler);
         return menuItem;
     }
 
-
-
     public void addTab(String title){
         
         CodeArea ca = new CodeArea("");
+        
+        
+        ca.setPrefHeight(scene.getHeight());
+        ca.setPrefWidth(scene.getWidth());
+        
         TabObject to = new TabObject(null, "java", true, title, ca);
         to.setStartingText("");
         tabs.add(to);
-        ca.setPrefHeight(scene.getHeight());
-        ca.setPrefWidth(scene.getWidth());
+
         Tab tab = new Tab(title, ca);
-        tab.onCloseRequestProperty().set(event -> {
-            MenuHandlers.closeTab(ca, to, event);
-            tabs.remove(to);
-        });
         tp.getTabs().add(tab);
         tp.getSelectionModel().select(tab);
+        
+        addStyling(ca, to);
+
+        int index = tp.getTabs().size();
+        tab.onCloseRequestProperty().set(event -> {
+            MenuHandlers.closeTab(ca, to, event);
+            if(!event.isConsumed()){
+                tabs.remove(to);
+                Subscription sub = subscriptions.get(index);
+                subscriptions.remove(index);
+                sub.unsubscribe();
+                ExecutorService exe = executors.get(index);
+                executors.remove(exe);
+                exe.shutdown();
+            }
+        });
+
+        
     }
+
     /**
      * add a tab to the tab pane
+     * 
      * @param title
      * @param text
      */
-    public void addTab(String title, String text){
-        
+    public void addTab(String title, String text) {
+
         CodeArea ca = new CodeArea(text);
         TabObject to = new TabObject(null, "txt", true, title, ca);
         to.setStartingText(text);
@@ -134,63 +164,127 @@ public class SceneBuilder {
         ca.setPrefHeight(scene.getHeight());
         ca.setPrefWidth(scene.getWidth());
         Tab tab = new Tab(title, ca);
-        tab.onCloseRequestProperty().set(event -> {
-            
-            MenuHandlers.closeTab(ca, to, event);
-            tabs.remove(to);
-        });
-        tp.getTabs().add(tab);
-        tp.getSelectionModel().select(tab);
-    }
-    /**
-     * add a tab to the tabpane
-     * @param title the title of the tab
-     * @param f the file to be opened
-     * @throws FileNotFoundException
-     */
-    public void addTab(String title, File f) throws FileNotFoundException{
-        //the text to display to the code area
-        StringBuilder sb = new StringBuilder();
-        //read from the file
-        Scanner s = new Scanner(f);
-        while(s.hasNext()){
-            sb.append(s.nextLine() + "\n");
-        }
-        //close resource
-        s.close();
-        //create the code area and add a tab object
-        CodeArea ca = new CodeArea(sb.toString());
-        String extension;
-        if(!f.getName().contains(".")){
-            extension = "txt";
-        }else{
-            extension = f.getName().substring(f.getName().lastIndexOf(".") + 1);
-        }
-        
-        TabObject to = new TabObject(f, extension, true, title, ca);
-        to.setStartingText(sb.toString());
-        //add the tab
-        tabs.add(to);
-        //set the height and width of the code area
-        ca.setPrefHeight(scene.getHeight());
-        ca.setPrefWidth(scene.getWidth());
-        //create the tab 
-        Tab tab = new Tab(title, ca);
-        //add the close event handler 
+        addStyling(ca, to);
+        int index = tp.getTabs().size();
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
-            tabs.remove(to);
+            if(!event.isConsumed()){
+                tabs.remove(to);
+                Subscription sub = subscriptions.get(index);
+                subscriptions.remove(index);
+                sub.unsubscribe();
+                ExecutorService exe = executors.get(index);
+                executors.remove(exe);
+                exe.shutdown();
+            }
         });
-        //add the tab to the tab pane
         tp.getTabs().add(tab);
-        //select tab
         tp.getSelectionModel().select(tab);
     }
 
-    public static Button buildButton(String text, EventHandler<ActionEvent> handler){
+    /**
+     * add a tab to the tabpane
+     * 
+     * @param title the title of the tab
+     * @param f     the file to be opened
+     * @throws FileNotFoundException
+     */
+    public void addTab(String title, File f) throws FileNotFoundException {
+
+        // read from the file
+        StringBuilder sb = new StringBuilder();
+
+        Scanner s = new Scanner(f);
+        while (s.hasNext()) {
+            sb.append(s.nextLine() + "\n");
+        }
+        s.close();
+
+        //create the text area
+        CodeArea ca = new CodeArea(sb.toString());
+        String extension;
+        if (!f.getName().contains(".")) {
+            extension = "txt";
+        } else {
+            extension = f.getName().substring(f.getName().lastIndexOf(".") + 1);
+        }
+
+        ca.setPrefHeight(scene.getHeight());
+        ca.setPrefWidth(scene.getWidth());
+
+        //add the tab
+        TabObject to = new TabObject(f, extension, true, title, ca);
+        to.setStartingText(sb.toString());
+
+        tabs.add(to);
+
+        Tab tab = new Tab(title, ca);
+
+        tp.getTabs().add(tab);
+        tp.getSelectionModel().select(tab);
+
+        //add the highlighting
+        addStyling(ca, to);
+
+        //close handler
+        int index = tp.getTabs().size();
+        tab.onCloseRequestProperty().set(event -> {
+            MenuHandlers.closeTab(ca, to, event);
+            if(!event.isConsumed()){
+                tabs.remove(to);
+                Subscription sub = subscriptions.get(index);
+                subscriptions.remove(index);
+                sub.unsubscribe();
+                ExecutorService exe = executors.get(index);
+                executors.remove(exe);
+                exe.shutdown();
+            }
+        });
+
+
+        
+    }
+
+    public static Button buildButton(String text, EventHandler<ActionEvent> handler) {
         Button b = new Button(text);
         b.setOnAction(handler);
         return b;
+    }
+
+    private void addStyling(CodeArea ca, TabObject to) {
+        ca.setParagraphGraphicFactory(LineNumberFactory.get(ca));
+
+        ExecutorService exe = Executors.newSingleThreadExecutor();
+        executors.add(exe);
+
+        //set styler
+        Styler s;
+        Language l;
+        if(App.languages.containsKey(to.getExtension())){
+            l = App.languages.get(to.getExtension());
+        }else{
+            l = App.languages.get("");
+        }
+
+        s = new Styler(ca, l, exe);
+      
+        Subscription cleanupWhenDone = ca.multiPlainChanges()
+                .successionEnds(Duration.ofMillis(500))
+                .retainLatestUntilLater(exe)
+                .supplyTask(s::computeHighlightingAsync)
+                .awaitLatest(ca.multiPlainChanges())
+                .filterMap(t -> {
+                    Optional<StyleSpans<Collection<String>>> o;
+                    if (t.isSuccess()) {
+                        o = Optional.of(t.get());
+                    } else {
+                        o = Optional.empty();
+                    }
+                    return o;
+                })
+                .subscribe(s::applyHighlighting);
+        subscriptions.add(cleanupWhenDone);
+        ca.getStylesheets().add(l.getCss());
     }
 
 }

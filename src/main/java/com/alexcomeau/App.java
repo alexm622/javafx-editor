@@ -1,6 +1,7 @@
 package com.alexcomeau;
 
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
 
 import com.alexcomeau.lang.Language;
 import com.alexcomeau.lang.LanguageMap;
@@ -25,6 +26,14 @@ public class App extends Application {
 
         stage.setScene(sb.buildScene());
         stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        for(ExecutorService ex : SceneBuilder.executors){
+            ex.shutdown();
+        }
+        super.stop();
     }
 
     public static void main(String[] args) {

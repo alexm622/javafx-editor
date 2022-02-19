@@ -5,6 +5,11 @@
   <artifactId>javafx-editor</artifactId>
   <version>1.0.0</version>
   <build>
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.openjfx</groupId>
@@ -38,6 +43,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version>
         <configuration>
           <archive>
             <manifest>
