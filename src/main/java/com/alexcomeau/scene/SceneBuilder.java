@@ -68,25 +68,25 @@ public class SceneBuilder {
                 }),
                 buildMenuItem("save (ctrl-s)", handler -> {
                     if (tabs.size() == 0) {
-                        System.out.println("no tabs");
+                        
                     } else {
-                        System.out.println("saving as");
+                        
                         tabs.get(tp.getSelectionModel().getSelectedIndex())
                                 .setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
                         if (tabs.get(tp.getSelectionModel().getSelectedIndex()).getFile() == null) {
-                            System.out.println("no file");
+                            
                             MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                         } else {
-                            System.out.println("saving");
+                            
                             MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                         }
                     }
                 }),
                 buildMenuItem("save as (ctrl-shift-s)", handler -> {
                     if (tabs.size() == 0) {
-                        System.out.println("no tabs");
+                        
                     } else {
-                        System.out.println("saving as");
+                        
                         tabs.get(tp.getSelectionModel().getSelectedIndex())
                                 .setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
                         MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
@@ -132,7 +132,7 @@ public class SceneBuilder {
         
         addStyling(ca, to);
 
-        int index = tp.getTabs().size();
+        int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
             if(!event.isConsumed()){
@@ -165,7 +165,7 @@ public class SceneBuilder {
         ca.setPrefWidth(scene.getWidth());
         Tab tab = new Tab(title, ca);
         addStyling(ca, to);
-        int index = tp.getTabs().size();
+        int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
             if(!event.isConsumed()){
@@ -227,7 +227,7 @@ public class SceneBuilder {
         addStyling(ca, to);
 
         //close handler
-        int index = tp.getTabs().size();
+        int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
             if(!event.isConsumed()){
@@ -263,7 +263,7 @@ public class SceneBuilder {
         if(App.languages.containsKey(to.getExtension())){
             l = App.languages.get(to.getExtension());
         }else{
-            l = App.languages.get("");
+            l = App.languages.get("txt");
         }
 
         s = new Styler(ca, l, exe);

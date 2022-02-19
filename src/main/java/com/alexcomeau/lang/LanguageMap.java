@@ -27,7 +27,7 @@ public class LanguageMap {
             
             @Override
             public String getCss() {
-                return "";
+                return "nothing.css";
             }
         });
         return languages;

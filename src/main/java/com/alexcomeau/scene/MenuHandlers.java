@@ -23,7 +23,6 @@ public class MenuHandlers {
             if(to.getFile() == null){
                 continue;
             }else if(to.getFile().equals(f)) {
-                System.out.println("File already open");
                 SceneBuilder.tp.getSelectionModel().select(SceneBuilder.tabs.indexOf(to));
                 return;
             }
@@ -32,6 +31,7 @@ public class MenuHandlers {
         try {
             sb.addTab(f.getPath(), f);
         } catch (Exception e) {
+            e.printStackTrace();
             String name = "FileNotFound";
             sb.addTab(name, "the file was not found or something went well");
             //select the tab
@@ -40,12 +40,10 @@ public class MenuHandlers {
     }
 
     public static void closeTab(CodeArea ca, TabObject to, Event e) {
-        System.out.println("codearea: " + ca.getText());
-        System.out.println("to: " + to.getStartingText());
         if ((to.getName().equals("*new*") || !to.getStartingText().equals(ca.getText()))) {
             //if its a new file and it is empty discard
             if(to.getName().equals("*new*") && ca.getText().equals("")){
-                System.out.println("discarding");
+                
                 return;
             }
             if(to.getName().equals("*new*")){
@@ -68,7 +66,6 @@ public class MenuHandlers {
                 ButtonType.CANCEL);
         dialog.showAndWait().ifPresent(type -> {
             if (type == ButtonType.YES) {
-                System.out.println("yes");
                 to.setText(ca.getText());
                 if (to.getName().equals("untitled")) {
                     saveAs(to, e);
@@ -76,7 +73,7 @@ public class MenuHandlers {
                     save(to, e);
                 }
             } else if (type == ButtonType.NO) {
-                System.out.println("no");
+               
             } else if (type == ButtonType.CANCEL) {
                 e.consume();
             }
@@ -111,7 +108,6 @@ public class MenuHandlers {
             );
             dialogErr.showAndWait().ifPresent(responseErr -> {
                 if (responseErr.equals(ButtonType.OK.toString())) {
-                    System.out.println("ok");
                     e.consume();
                 }
             });
@@ -133,7 +129,6 @@ public class MenuHandlers {
             );
             dialogErr.showAndWait().ifPresent(responseErr -> {
                 if (responseErr.equals(ButtonType.OK.toString())) {
-                    System.out.println("ok");
                     e.consume();
                 }
             });
