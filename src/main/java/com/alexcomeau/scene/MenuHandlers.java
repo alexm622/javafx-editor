@@ -18,6 +18,9 @@ public class MenuHandlers {
         File f;
         // add button to open file
         f = fileChooser.showOpenDialog(null);
+        if(f == null) {
+            return;
+        }
 
         for(TabObject to : SceneBuilder.tabs) {
             if(to.getFile() == null){
@@ -94,6 +97,17 @@ public class MenuHandlers {
             FileWriter fw = new FileWriter(f);
             fw.write(to.getText());
             fw.close();
+            to.setFile(f);
+            to.setName(f.getName());
+            to.setStartingText(to.getText());
+            //update the tab text
+            SceneBuilder.tp.getSelectionModel().getSelectedItem().setText(f.getName());
+            if (!f.getName().contains(".")) {
+                to.setExtension("txt");
+            } else {
+                to.setExtension(f.getName().substring(f.getName().lastIndexOf(".") + 1));
+            }
+            SceneBuilder.reapplyStyling(to);
         } catch (Exception ee) {
             if(e == null){
                 //this is intentional

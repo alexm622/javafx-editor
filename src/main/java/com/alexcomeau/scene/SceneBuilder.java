@@ -122,7 +122,7 @@ public class SceneBuilder {
         ca.setPrefHeight(scene.getHeight());
         ca.setPrefWidth(scene.getWidth());
         
-        TabObject to = new TabObject(null, "java", true, title, ca);
+        TabObject to = new TabObject(null, "txt", true, title, ca);
         to.setStartingText("");
         tabs.add(to);
 
@@ -251,7 +251,7 @@ public class SceneBuilder {
         return b;
     }
 
-    private void addStyling(CodeArea ca, TabObject to) {
+    private static void addStyling(CodeArea ca, TabObject to) {
         ca.setParagraphGraphicFactory(LineNumberFactory.get(ca));
 
         ExecutorService exe = Executors.newSingleThreadExecutor();
@@ -261,7 +261,9 @@ public class SceneBuilder {
         Styler s;
         Language l;
         if(App.languages.containsKey(to.getExtension())){
+            System.out.println("extension: " + to.getExtension());
             l = App.languages.get(to.getExtension());
+            System.out.println(l.getCss());
         }else{
             l = App.languages.get("txt");
         }
@@ -284,7 +286,24 @@ public class SceneBuilder {
                 })
                 .subscribe(s::applyHighlighting);
         subscriptions.add(cleanupWhenDone);
+        ca.getStylesheets().removeAll();
+        ca.getStylesheets().addAll(new CodeArea().getStylesheets());
         ca.getStylesheets().add(l.getCss());
+    }
+
+    public static void reapplyStyling(TabObject to){
+
+        //we also need to remove the executor and subscription
+        int index = tabs.indexOf(to);
+        Subscription sub = subscriptions.get(index);
+        subscriptions.remove(index);
+        sub.unsubscribe();
+        
+        ExecutorService exe = executors.get(index);
+        executors.remove(index);
+        exe.shutdown();
+
+        addStyling(to.getCa(), to);
     }
 
 }
