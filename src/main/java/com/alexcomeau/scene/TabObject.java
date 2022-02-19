@@ -2,6 +2,8 @@ package com.alexcomeau.scene;
 
 import java.io.File;
 
+import org.fxmisc.richtext.CodeArea;
+
 public class TabObject{
     private String name;
     private String text;
@@ -9,12 +11,19 @@ public class TabObject{
     private File file;
     private String extension;
     private boolean isSaved;
-    public TabObject(File f, String ext, boolean isSaved, String name){
+    final private CodeArea ca;
+    public TabObject(File f, String ext, boolean isSaved, String name, CodeArea ca){
+        this.ca = ca;
         this.file = f;
         this.extension = ext;
         this.isSaved = isSaved;
         this.name = name;
     }
+
+    public CodeArea getCa(){
+        return ca;
+    }
+    
 
     public String getStartingText() {
         return startingText;

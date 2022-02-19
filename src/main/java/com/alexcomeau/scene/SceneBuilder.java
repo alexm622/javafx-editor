@@ -10,6 +10,7 @@ import java.util.Scanner;
 import org.fxmisc.richtext.CodeArea;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,12 +33,7 @@ public class SceneBuilder {
     public Scene buildScene() {
         VBox vbox = new VBox();
         scene = new Scene(vbox, width, height);
-        //use a text area to display the text
-        CodeArea ca = new CodeArea();
-        ca.setPrefSize(width, height);
-       
 
-    
         vbox.getChildren().addAll(buildMenuBar(), tp);
 
         return scene;
@@ -56,13 +52,43 @@ public class SceneBuilder {
                     MenuHandlers.addTab(this);
                 }),
                 buildMenuItem("save (ctrl-s)", handler -> {
-                    System.out.println("Save");
+                    if(tabs.size() == 0){
+                        System.out.println("no tabs");
+                    }
+                    else{
+                        System.out.println("saving as");
+                        tabs.get(tp.getSelectionModel().getSelectedIndex()).setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
+                        if(tabs.get(tp.getSelectionModel().getSelectedIndex()).getFile() == null){
+                            System.out.println("no file");
+                            MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                        }
+                        else{
+                            System.out.println("saving");
+                            MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                        }
+                    }
                 }),
                 buildMenuItem("save as (ctrl-shift-s)", handler -> {
-                    System.out.println("Save as");
+                    if(tabs.size() == 0){
+                        System.out.println("no tabs");
+                    }
+                    else{
+                        System.out.println("saving as");
+                        tabs.get(tp.getSelectionModel().getSelectedIndex()).setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
+                        MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                    }
                 }),
                 buildMenuItem("close (ctrl-w)", handler -> {
-                    System.out.println("Close");
+                    if(tabs.size() == 0){
+                        //exit gracefully
+                        System.exit(1);
+
+                    }
+                    else{
+                        EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
+                        tabHandler.handle(null);
+                        tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
+                    }
                 })
         );
         
@@ -81,7 +107,7 @@ public class SceneBuilder {
     public void addTab(String title){
         
         CodeArea ca = new CodeArea("");
-        TabObject to = new TabObject(null, "java", true, title);
+        TabObject to = new TabObject(null, "java", true, title, ca);
         to.setStartingText("");
         tabs.add(to);
         ca.setPrefHeight(scene.getHeight());
@@ -102,13 +128,14 @@ public class SceneBuilder {
     public void addTab(String title, String text){
         
         CodeArea ca = new CodeArea(text);
-        TabObject to = new TabObject(null, "java", true, title);
+        TabObject to = new TabObject(null, "txt", true, title, ca);
         to.setStartingText(text);
         tabs.add(to);
         ca.setPrefHeight(scene.getHeight());
         ca.setPrefWidth(scene.getWidth());
         Tab tab = new Tab(title, ca);
         tab.onCloseRequestProperty().set(event -> {
+            
             MenuHandlers.closeTab(ca, to, event);
             tabs.remove(to);
         });
@@ -133,7 +160,14 @@ public class SceneBuilder {
         s.close();
         //create the code area and add a tab object
         CodeArea ca = new CodeArea(sb.toString());
-        TabObject to = new TabObject(f, "java", true, title);
+        String extension;
+        if(!f.getName().contains(".")){
+            extension = "txt";
+        }else{
+            extension = f.getName().substring(f.getName().lastIndexOf(".") + 1);
+        }
+        
+        TabObject to = new TabObject(f, extension, true, title, ca);
         to.setStartingText(sb.toString());
         //add the tab
         tabs.add(to);

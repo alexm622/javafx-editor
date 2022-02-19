@@ -98,6 +98,10 @@ public class MenuHandlers {
             fw.write(to.getText());
             fw.close();
         } catch (Exception ee) {
+            if(e == null){
+                //this is intentional
+                return;
+            }
             Dialog<String> dialogErr = new Dialog<>();
             dialogErr.setTitle("something went wrong");
             dialogErr.setContentText("something went wrong");
