@@ -25,7 +25,12 @@ use command `mvn javafx:run` in the project root to run
 
 Building
 ===
-use the command `mvn clean install` to build into a jar file, then you can find the compiled jar file in the `target` folder. you can run this through command line after running `mvn clean install` buy just running the command `java -jar target/javafx-editor-1.0.0.jar` or you 
+Steps: 
+1. use the command `mvn clean install` to build into a jar file. 
+2. The final jar file will be between 10 and 15 megabytes and in the target folder
+
+Alternative steps:
+1. use the command `mvn javafx:run` to run the file without building a jar file
 
 Used Libraries
 ===

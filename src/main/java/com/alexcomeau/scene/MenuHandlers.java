@@ -134,6 +134,7 @@ public class MenuHandlers {
             fw.write(to.getText());
             fw.close();
         } catch (Exception ee) {
+            
             Dialog<String> dialogErr = new Dialog<>();
             dialogErr.setTitle("something went wrong");
             dialogErr.setContentText("something went wrong");
@@ -141,8 +142,13 @@ public class MenuHandlers {
                     ButtonType.OK
 
             );
+            
             dialogErr.showAndWait().ifPresent(responseErr -> {
                 if (responseErr.equals(ButtonType.OK.toString())) {
+                    if(e == null){
+                        //this is intentional
+                        return;
+                    }
                     e.consume();
                 }
             });

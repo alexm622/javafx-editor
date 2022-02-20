@@ -30,9 +30,36 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 
 public class SceneBuilder {
+    final KeyCombination save = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+    final KeyCombination saveAs = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+    final KeyCombination newFile = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+    final KeyCombination open = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
+    final KeyCombination close = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN);
+    final KeyCombination closeAll = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+    final KeyCombination exit = new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN);
+    final KeyCombination undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+    final KeyCombination redo = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+    final KeyCombination paste = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
+    final KeyCombination selectAll = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+    final KeyCombination find = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
+    final KeyCombination replace = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+    final KeyCombination comment = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_DOWN);
+    final KeyCombination uncomment = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+    final KeyCombination compile = new KeyCodeCombination(KeyCode.F9);
+    final KeyCombination run = new KeyCodeCombination(KeyCode.F5);
+    final KeyCombination debug = new KeyCodeCombination(KeyCode.F6);
+    final KeyCombination stop = new KeyCodeCombination(KeyCode.F6, KeyCombination.SHIFT_DOWN);
+    final KeyCombination step = new KeyCodeCombination(KeyCode.F7);
+    final KeyCombination stepOver = new KeyCodeCombination(KeyCode.F8);
+    final KeyCombination stepOut = new KeyCodeCombination(KeyCode.F8, KeyCombination.SHIFT_DOWN);
+
+
     static TabPane tp = new TabPane();
     static ArrayList<TabObject> tabs = new ArrayList<TabObject>();
     public static ArrayList<ExecutorService> executors = new ArrayList<ExecutorService>();
@@ -48,10 +75,119 @@ public class SceneBuilder {
     public Scene buildScene() {
         VBox vbox = new VBox();
         scene = new Scene(vbox, width, height);
-
         vbox.getChildren().addAll(buildMenuBar(), tp);
 
+        addEventHandlers(scene);
+
         return scene;
+    }
+
+    private void addEventHandlers(Scene scene){
+        scene.setOnKeyPressed(handler->{
+            if(save.match(handler)){
+                if (tabs.size() == 0) {
+                        
+                } else {
+                    
+                    tabs.get(tp.getSelectionModel().getSelectedIndex())
+                            .setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());
+                    if (tabs.get(tp.getSelectionModel().getSelectedIndex()).getFile() == null) {
+                        
+                        MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                    } else {
+                        
+                        MenuHandlers.save(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                    }
+                }
+            }
+            else if(saveAs.match(handler)){
+                if(tabs.size() == 0){
+
+                }else{
+                    MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                }
+            }
+            else if(newFile.match(handler)){
+                addTab("*new*");
+            }
+            else if(open.match(handler)){
+                MenuHandlers.addTab(this);
+            }
+            else if(close.match(handler)){
+                if (tabs.size() == 0) {
+                    // exit gracefully
+                    System.exit(1);
+
+                } else {
+                    EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
+                    tabHandler.handle(null);
+                    tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
+                }
+            }
+            else if(closeAll.match(handler)){
+                while(tabs.size() != 0){
+                    EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
+                    tabHandler.handle(null);
+                    tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
+                }
+            }
+            else if(exit.match(handler)){
+                while(tabs.size() != 0){
+                    EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
+                    tabHandler.handle(null);
+                    tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
+                    // exit gracefully
+                    System.exit(1);
+                }
+            }
+            else if(undo.match(handler)){
+                if (tabs.size() == 0) {
+
+                }else{
+                    tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().undo();
+                }
+            }
+            else if(redo.match(handler)){
+                if(tabs.size() == 0){
+                }else{
+                    tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().redo();
+                }
+            }
+            else if(find.match(handler)){
+                //find only
+            }
+            else if(replace.match(handler)){
+                //this will be find and replace
+            }
+            else if(comment.match(handler)){
+                //TODO implement comment
+            }
+            else if(uncomment.match(handler)){
+                //TODO implement uncomment;
+            }
+            else if(compile.match(handler)){
+                //we're not going to compile anything, this is too complicated at the moment
+                //TODO implement compile
+            }
+            else if(run.match(handler)){
+                //same as compile
+            }
+            else if(debug.match(handler)){
+                //same as compile
+            }
+            else if(stop.match(handler)){
+                //same as compile
+            }
+            else if(step.match(handler)){
+                //same as compile
+            }
+            else if(stepOver.match(handler)){
+                //same as compile
+            }
+            else if(stepOut.match(handler)){
+                //same as compile
+            }
+        });
     }
 
     private MenuBar buildMenuBar() {
@@ -78,7 +214,7 @@ public class SceneBuilder {
                             MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                         } else {
                             
-                            MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
+                            MenuHandlers.save(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                         }
                     }
                 }),
