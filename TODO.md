@@ -9,3 +9,4 @@ items ordered from most priority to least
 4. User defined syntax highlighting rules
 5. lsp support?
 6. workspace tree?
+7. DOCUMENTATION!!!
