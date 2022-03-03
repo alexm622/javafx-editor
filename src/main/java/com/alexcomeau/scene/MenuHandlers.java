@@ -9,8 +9,15 @@ import javafx.event.Event;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.stage.FileChooser;
-
+/**
+ * handlers for each of the menu items
+ * @author Alex Comeau
+ */
 public class MenuHandlers {
+    /**
+     * add a new tab
+     * @param sb the scene builder
+     */
     public static void addTab(SceneBuilder sb) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
@@ -36,12 +43,17 @@ public class MenuHandlers {
         } catch (Exception e) {
             e.printStackTrace();
             String name = "FileNotFound";
-            sb.addTab(name, "the file was not found or something went well");
-            //select the tab
+            sb.addTab(name, "the file was not found or something went wrong");
             
         }
     }
-
+    
+    /**
+     * close the current tab and decide whether it should be discarded or saved
+     * @param ca the code area
+     * @param to the tab object
+     * @param e the event
+     */
     public static void closeTab(CodeArea ca, TabObject to, Event e) {
         if ((to.getName().equals("*new*") || !to.getStartingText().equals(ca.getText()))) {
             //if its a new file and it is empty discard
@@ -57,6 +69,12 @@ public class MenuHandlers {
 
     }
 
+    /**
+     * save the current tab
+     * @param ca the code area
+     * @param to the tab object
+     * @param e the event
+     */
     private static void saveDialog(CodeArea ca, TabObject to, Event e) {
 
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -86,6 +104,11 @@ public class MenuHandlers {
 
     }
 
+    /**
+     * save the current tab with save as
+     * @param to the tab object
+     * @param e the event
+     */
     public static void saveAs(TabObject to, Event e) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
@@ -128,6 +151,11 @@ public class MenuHandlers {
         }
     }
 
+    /**
+     * save the current tab
+     * @param to the tab object
+     * @param e the event
+     */
     public static void save(TabObject to, Event e) {
         try {
             FileWriter fw = new FileWriter(to.getFile());

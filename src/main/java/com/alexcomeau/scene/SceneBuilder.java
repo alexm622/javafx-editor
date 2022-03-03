@@ -30,48 +30,34 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 
+/**
+ * SceneBuilder
+ * @author Alex Comeau
+ */
 public class SceneBuilder {
-    final KeyCombination save = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
-    final KeyCombination saveAs = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
-    final KeyCombination newFile = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
-    final KeyCombination open = new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN);
-    final KeyCombination close = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN);
-    final KeyCombination closeAll = new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
-    final KeyCombination exit = new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN);
-    final KeyCombination undo = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
-    final KeyCombination redo = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
-    final KeyCombination paste = new KeyCodeCombination(KeyCode.V, KeyCombination.CONTROL_DOWN);
-    final KeyCombination selectAll = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
-    final KeyCombination find = new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN);
-    final KeyCombination replace = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-    final KeyCombination comment = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_DOWN);
-    final KeyCombination uncomment = new KeyCodeCombination(KeyCode.SLASH, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
-    final KeyCombination compile = new KeyCodeCombination(KeyCode.F9);
-    final KeyCombination run = new KeyCodeCombination(KeyCode.F5);
-    final KeyCombination debug = new KeyCodeCombination(KeyCode.F6);
-    final KeyCombination stop = new KeyCodeCombination(KeyCode.F6, KeyCombination.SHIFT_DOWN);
-    final KeyCombination step = new KeyCodeCombination(KeyCode.F7);
-    final KeyCombination stepOver = new KeyCodeCombination(KeyCode.F8);
-    final KeyCombination stepOut = new KeyCodeCombination(KeyCode.F8, KeyCombination.SHIFT_DOWN);
-
-
+    
     static TabPane tp = new TabPane();
     static ArrayList<TabObject> tabs = new ArrayList<TabObject>();
     public static ArrayList<ExecutorService> executors = new ArrayList<ExecutorService>();
     public static ArrayList<Subscription> subscriptions = new ArrayList<Subscription>();
     int width, height;
     static Scene scene;
-
+    
+    /**
+     * initialize object with width and height
+     * @param width
+     * @param height
+     */
     public SceneBuilder(int width, int height) {
         this.width = width;
         this.height = height;
     }
 
+    /**
+     * build the scene and return it
+     */
     public Scene buildScene() {
         VBox vbox = new VBox();
         scene = new Scene(vbox, width, height);
@@ -81,10 +67,14 @@ public class SceneBuilder {
 
         return scene;
     }
-
+    
+    /**
+     * add event handlers to the scene
+     * @param scene the scene to add the event handlers to
+     */
     private void addEventHandlers(Scene scene){
         scene.setOnKeyPressed(handler->{
-            if(save.match(handler)){
+            if(KeyCombinations.SAVE.match(handler)){
                 if (tabs.size() == 0) {
                         
                 } else {
@@ -100,20 +90,20 @@ public class SceneBuilder {
                     }
                 }
             }
-            else if(saveAs.match(handler)){
+            else if(KeyCombinations.SAVE_AS.match(handler)){
                 if(tabs.size() == 0){
 
                 }else{
                     MenuHandlers.saveAs(tabs.get(tp.getSelectionModel().getSelectedIndex()), null);
                 }
             }
-            else if(newFile.match(handler)){
+            else if(KeyCombinations.NEW_FILE.match(handler)){
                 addTab("*new*");
             }
-            else if(open.match(handler)){
+            else if(KeyCombinations.OPEN.match(handler)){
                 MenuHandlers.addTab(this);
             }
-            else if(close.match(handler)){
+            else if(KeyCombinations.CLOSE.match(handler)){
                 if (tabs.size() == 0) {
                     // exit gracefully
                     System.exit(1);
@@ -124,14 +114,14 @@ public class SceneBuilder {
                     tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
                 }
             }
-            else if(closeAll.match(handler)){
+            else if(KeyCombinations.CLOSE_ALL.match(handler)){
                 while(tabs.size() != 0){
                     EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
                     tabHandler.handle(null);
                     tp.getTabs().remove(tp.getSelectionModel().getSelectedIndex());
                 }
             }
-            else if(exit.match(handler)){
+            else if(KeyCombinations.EXIT.match(handler)){
                 while(tabs.size() != 0){
                     EventHandler<Event> tabHandler = tp.getSelectionModel().getSelectedItem().getOnCloseRequest();
                     tabHandler.handle(null);
@@ -140,56 +130,62 @@ public class SceneBuilder {
                     System.exit(1);
                 }
             }
-            else if(undo.match(handler)){
+            else if(KeyCombinations.UNDO.match(handler)){
                 if (tabs.size() == 0) {
 
                 }else{
                     tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().undo();
                 }
             }
-            else if(redo.match(handler)){
+            else if(KeyCombinations.REDO.match(handler)){
                 if(tabs.size() == 0){
                 }else{
                     tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().redo();
                 }
             }
-            else if(find.match(handler)){
+            else if(KeyCombinations.FIND.match(handler)){
                 //find only
             }
-            else if(replace.match(handler)){
+            else if(KeyCombinations.REPLACE.match(handler)){
                 //this will be find and replace
             }
-            else if(comment.match(handler)){
+            else if(KeyCombinations.COMMENT.match(handler)){
                 //TODO implement comment
             }
-            else if(uncomment.match(handler)){
+            else if(KeyCombinations.UNCOMMENT.match(handler)){
                 //TODO implement uncomment;
             }
-            else if(compile.match(handler)){
-                //we're not going to compile anything, this is too complicated at the moment
-                //TODO implement compile
+            else if(KeyCombinations.COMPILE.match(handler)){
+                /*
+                * TODO implement compile
+                * currently this is not at the top of the list of priorities
+                * this and following functions may be implemented later if time permits
+                */
             }
-            else if(run.match(handler)){
+            else if(KeyCombinations.RUN.match(handler)){
                 //same as compile
             }
-            else if(debug.match(handler)){
+            else if(KeyCombinations.DEBUG.match(handler)){
                 //same as compile
             }
-            else if(stop.match(handler)){
+            else if(KeyCombinations.STOP.match(handler)){
                 //same as compile
             }
-            else if(step.match(handler)){
+            else if(KeyCombinations.STEP.match(handler)){
                 //same as compile
             }
-            else if(stepOver.match(handler)){
+            else if(KeyCombinations.STEP_OVER.match(handler)){
                 //same as compile
             }
-            else if(stepOut.match(handler)){
+            else if(KeyCombinations.STEP_OUT.match(handler)){
                 //same as compile
             }
         });
     }
 
+    /**
+     * build the menu bar
+     */
     private MenuBar buildMenuBar() {
         MenuBar menuBar = new MenuBar();
         final Menu file = new Menu("File");
@@ -244,12 +240,23 @@ public class SceneBuilder {
         return menuBar;
     }
 
+    /**
+     * build a menu item
+     *
+     * @param name
+     * @param handler
+     * @return 
+     */
     private MenuItem buildMenuItem(String text, EventHandler<ActionEvent> handler) {
         MenuItem menuItem = new MenuItem(text);
         menuItem.setOnAction(handler);
         return menuItem;
     }
 
+    /**
+     * add a tab to the tab pane
+     * @param title the title of the tab
+     */
     public void addTab(String title){
         
         CodeArea ca = new CodeArea("");
@@ -381,12 +388,23 @@ public class SceneBuilder {
         
     }
 
+    /**
+     * build a button
+     * @param text the text of the button
+     * @param handler the handler for the button
+     * @return
+     */
     public static Button buildButton(String text, EventHandler<ActionEvent> handler) {
         Button b = new Button(text);
         b.setOnAction(handler);
         return b;
     }
 
+    /**
+     * add styling to the code area
+     * @param ca the code area
+     * @param to the tab object
+     */
     private static void addStyling(CodeArea ca, TabObject to) {
         ca.setParagraphGraphicFactory(LineNumberFactory.get(ca));
 
@@ -426,7 +444,11 @@ public class SceneBuilder {
         ca.getStylesheets().addAll(new CodeArea().getStylesheets());
         ca.getStylesheets().add(l.getCss());
     }
-
+    
+    /**
+     * reapply the styling to the code area
+     * @param to the tab object
+     */
     public static void reapplyStyling(TabObject to){
 
         //we also need to remove the executor and subscription

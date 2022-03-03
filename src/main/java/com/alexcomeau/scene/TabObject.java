@@ -4,6 +4,10 @@ import java.io.File;
 
 import org.fxmisc.richtext.CodeArea;
 
+/**
+ * a tab object
+ * @author Alex Comeau
+ */
 public class TabObject{
     private String name;
     private String text;
@@ -12,6 +16,14 @@ public class TabObject{
     private String extension;
     private boolean isSaved;
     final private CodeArea ca;
+    /**
+     * initialize a tab object
+     * @param f the file (null if not yet created)
+     * @param ext the extension (txt by default)
+     * @param isSaved true if the file is saved (this isn't really used)
+     * @param name the name of the tab
+     * @param ca the code area
+     */
     public TabObject(File f, String ext, boolean isSaved, String name, CodeArea ca){
         this.ca = ca;
         this.file = f;

@@ -18,6 +18,9 @@ public class App extends Application {
     public static HashMap<String,Language> languages = new HashMap<String, Language>();
 
     @Override
+    /**
+     * start the application
+     */
     public void start(Stage stage) {
         languages = LanguageMap.getLanguages();
         
