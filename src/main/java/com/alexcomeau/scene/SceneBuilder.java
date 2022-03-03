@@ -278,7 +278,7 @@ public class SceneBuilder {
         int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
-            if(!event.isConsumed()){
+            if(event == null || !event.isConsumed()){
                 tabs.remove(to);
                 Subscription sub = subscriptions.get(index);
                 subscriptions.remove(index);
@@ -311,7 +311,7 @@ public class SceneBuilder {
         int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
-            if(!event.isConsumed()){
+            if(event == null || !event.isConsumed()){
                 tabs.remove(to);
                 Subscription sub = subscriptions.get(index);
                 subscriptions.remove(index);
@@ -373,7 +373,7 @@ public class SceneBuilder {
         int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
-            if(!event.isConsumed()){
+            if(event == null || !event.isConsumed()){
                 tabs.remove(to);
                 Subscription sub = subscriptions.get(index);
                 subscriptions.remove(index);
