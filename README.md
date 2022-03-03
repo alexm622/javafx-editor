@@ -11,6 +11,7 @@
        * Interfaces
        * Collections
        * recursion
+   * [Troubleshooting](#troubleshooting)
 ---
 Requirements
 ====
@@ -19,31 +20,40 @@ Requirements
 
 \* you may be able to get away with a lesser java version if you edit the pom file, but this is not recommended
 
+
 Running
-=====
-use command `mvn javafx:run` in the project root to run
+===
+there are multiple ways to run this application. you can either use the provided jar file, [build](#building) it yourself with maven and run as a jar, or you can run it from the command line with maven
+**to run with maven:** use the command `mvn javafx:run` in the root of the project to run the file without building a jar file
 
 Building
 ===
 Steps: 
 1. use the command `mvn clean install` to build into a jar file. 
-2. The final jar file will be between 10 and 15 megabytes and in the target folder
+2. The final jar file will be between 10 and 15 megabytes and in the target folder named `javafx-editor-1.0.0.jar`
+you can then run it with `java -jar javafx-editor-1.0.0.jar`
 
-Alternative steps:
-1. use the command `mvn javafx:run` to run the file without building a jar file
+if any of these steps do not work check [troubleshooting](#troubleshooting)
+
+
 
 Used Libraries
 ===
 
 RichTextFX 
 ----------
-[RichTextFX](https://github.com/FXMisc/RichTextFX) is a library which focusing on adding better support to to text areas in javafx, such as character highlighting 
-<br>[LICENSE](https://choosealicense.com/licenses/bsd-2-clause/)
+[RichTextFX](https://github.com/FXMisc/RichTextFX) is a library which focusing on adding better support to to text areas in javafx, such as character highlighting \
+[LICENSE](https://choosealicense.com/licenses/bsd-2-clause/)
 
 OpenJFX
 ----
-[OpenJFX](https://github.com/openjdk/jfx) is the open source version of javafx, maintained by Red Hat, and available through maven
-<br>[LICENSE](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[OpenJFX](https://github.com/openjdk/jfx) is the open source version of javafx, maintained by Red Hat, and available through maven \
+[LICENSE](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 Examples of Project Requirements
 ========
+WIP
+
+Troubleshooting
+===
+WIP
