@@ -133,7 +133,7 @@ public class MenuHandlers {
             SceneBuilder.reapplyStyling(to);
         } catch (Exception ee) {
             if(e == null){
-                //this is intentional
+                //this is if the keycombo was used
                 return;
             }
             Dialog<String> dialogErr = new Dialog<>();
@@ -174,7 +174,7 @@ public class MenuHandlers {
             dialogErr.showAndWait().ifPresent(responseErr -> {
                 if (responseErr.equals(ButtonType.OK.toString())) {
                     if(e == null){
-                        //this is intentional
+                        //this is if the keycombo was used
                         return;
                     }
                     e.consume();
