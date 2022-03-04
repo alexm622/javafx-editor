@@ -8,7 +8,10 @@ import com.alexcomeau.lang.langdefs.Java;
 public class LanguageMap {
     public static HashMap<String, Language> getLanguages(){
         HashMap<String, Language> languages = new HashMap<String, Language>();
-        languages.put("java", new Java());
+        for(String s : new Java().getExtension()){
+            languages.put(s, new Java());
+        }
+        
         languages.put("txt", new Language() {
             @Override
             public Pattern getPattern() {
@@ -16,8 +19,8 @@ public class LanguageMap {
             }
 
             @Override
-            public String getExtension() {
-                return "txt";
+            public String[] getExtension() {
+                return new String[] {"txt"};
             }
 
             @Override

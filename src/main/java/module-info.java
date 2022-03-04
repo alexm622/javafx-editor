@@ -10,8 +10,17 @@ module com.alexcomeau {
     //this is going to have a warning no matter what because it is out of date
     requires transitive reactfx;
 
+    //include jackson and jackson-databind
+    requires transitive com.fasterxml.jackson.core;
+    requires transitive com.fasterxml.jackson.databind;
+
     //add language interface
     exports com.alexcomeau.lang;
+
+    //include config and required classes
+    exports com.alexcomeau.config;
+
+
 
     exports com.alexcomeau;
 }

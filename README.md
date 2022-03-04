@@ -50,6 +50,16 @@ OpenJFX
 [OpenJFX](https://github.com/openjdk/jfx) is the open source version of javafx, maintained by Red Hat, and available through maven \
 [LICENSE](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
+Jackson-Core
+----
+[jackson-core](https://github.com/FasterXML/jackson-core) is a base library required to map json to object
+[LICENSE](https://choosealicense.com/licenses/apache-2.0/)
+
+Jackson-Databind
+----
+[Jackson-Databind](https://github.com/FasterXML/jackson-databind) is the library which is used to map a json file into an object using an `ObjectMapper`
+[LICENSE](https://choosealicense.com/licenses/apache-2.0/)
+
 Examples of Project Requirements
 ========
 WIP

@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import com.alexcomeau.lang.Language;
 
 public class Java implements Language {
-    private String extension = "java";
+    private String extension[] = {"java"};
     // keywords
     private String[] KEYWORDS = {
             "abstract", "continue", "for", "new", "switch", "assert", "default", "goto", "package", "synchronized",
@@ -43,7 +43,7 @@ public class Java implements Language {
 
 
     @Override
-    public String getExtension() {
+    public String[] getExtension() {
         return this.extension;
     }
 
