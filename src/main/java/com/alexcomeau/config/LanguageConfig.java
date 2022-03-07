@@ -1,6 +1,6 @@
 package com.alexcomeau.config;
 
-public abstract class LanguageConfig {
+public class LanguageConfig {
     private String name;    
     private String[] extensions;
 

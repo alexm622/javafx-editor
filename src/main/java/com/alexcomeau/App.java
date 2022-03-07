@@ -3,6 +3,8 @@ package com.alexcomeau;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 
+import com.alexcomeau.config.Config;
+import com.alexcomeau.config.ConfigReader;
 import com.alexcomeau.lang.Language;
 import com.alexcomeau.lang.LanguageMap;
 import com.alexcomeau.scene.SceneBuilder;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
     public static HashMap<String,Language> languages = new HashMap<String, Language>();
+    public static Config config;
 
     @Override
     /**
@@ -40,6 +43,8 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        config = ConfigReader.readConfig(Config.CONFIG_FOLDER + "/" + Config.CONFIG_FILE);
+        System.out.println(config.toString());
         launch();
     }
 

@@ -20,6 +20,10 @@ module com.alexcomeau {
     //include config and required classes
     exports com.alexcomeau.config;
 
+    //opens config and languageconfig
+    opens com.alexcomeau.config;
+    opens com.alexcomeau.lang;
+
 
 
     exports com.alexcomeau;

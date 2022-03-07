@@ -1,5 +1,7 @@
 package com.alexcomeau.config;
 
+import java.io.File;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -10,7 +12,7 @@ public class ConfigReader {
         Config config;
         try{
             ObjectMapper om = new ObjectMapper();
-            config = om.readValue(configFile, Config.class);
+            config = om.readValue(new File(configFile), Config.class);
             return config;
         }catch(Exception e){
             e.printStackTrace();

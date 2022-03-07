@@ -22,6 +22,9 @@ public class Java implements Language {
     private static String SEMICOLON_PATTERN = "\\;";
     private static String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
     private static String COMMENT_PATTERN = "//[^\n]*" + "|" + "/\\*(.|\\R)*?\\*/";
+    private static String NUMBER_PATTERN = "\\d+\\.\\d+|\\d+";
+    private static String BOOLEAN_PATTERN = "true|false";
+    private static String NULL_PATTERN = "null";
 
     private Pattern pattern;
 
@@ -34,7 +37,10 @@ public class Java implements Language {
                         + "|(?<BRACKET>" + BRACKET_PATTERN + ")"
                         + "|(?<SEMICOLON>" + SEMICOLON_PATTERN + ")"
                         + "|(?<STRING>" + STRING_PATTERN + ")"
-                        + "|(?<COMMENT>" + COMMENT_PATTERN + ")");
+                        + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+                        + "|(?<NUMBER>" + NUMBER_PATTERN + ")"
+                        + "|(?<BOOLEAN>" + BOOLEAN_PATTERN + ")"
+                        + "|(?<NULL>" + NULL_PATTERN + ")");
     }
 
     public Pattern getPattern() {

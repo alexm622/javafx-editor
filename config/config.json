@@ -1,0 +1,11 @@
+{
+    "themeFile":null,
+    "themeFolder":"themes",
+    "languagesFolder":"lang",
+    "stylesFolder":"styles",
+
+    "language_configs":[
+        "java"
+    ]
+    
+}
