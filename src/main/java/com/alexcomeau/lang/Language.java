@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 public interface Language {
     public Pattern getPattern();
     public String[] getExtension();
-    public String[] getKeywords();
+    public default String[] getKeywords(){
+        return new String[]{"none"};
+    };
     public String getCss();
 }

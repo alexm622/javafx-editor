@@ -5,13 +5,15 @@ import java.util.concurrent.ExecutorService;
 
 import com.alexcomeau.config.Config;
 import com.alexcomeau.config.ConfigReader;
+import com.alexcomeau.config.lang.LanguageBuilder;
+import com.alexcomeau.config.lang.LanguageConfReader;
 import com.alexcomeau.lang.Language;
 import com.alexcomeau.lang.LanguageMap;
 import com.alexcomeau.scene.SceneBuilder;
 
 import javafx.application.Application;
 
-import javafx.stage.Stage;
+import javafx.stage.Stage; 
 
 /**
  * JavaFX App
@@ -25,7 +27,11 @@ public class App extends Application {
      * start the application
      */
     public void start(Stage stage) {
-        languages = LanguageMap.getLanguages();
+       
+        config = ConfigReader.readConfig(Config.CONFIG_FOLDER + "/" + Config.CONFIG_FILE);
+
+        //read the languages
+        languages = new LanguageMap(LanguageConfReader.readLanguages()).getLangMap();
         
         stage.setTitle("jfx-edit");
         SceneBuilder sb = new SceneBuilder(700, 700);
@@ -43,8 +49,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        config = ConfigReader.readConfig(Config.CONFIG_FOLDER + "/" + Config.CONFIG_FILE);
-        System.out.println(config.toString());
+        
         launch();
     }
 
