@@ -56,15 +56,17 @@ public class LanguageBuilder {
         if(isWord){
             pattern += "\\b(";
         }
+        int index = 0;
         for(String s: strings){
-            if(pattern.length() > 0 | (isWord && pattern.length() > "\\b(".length())){
+            if(index != 0){
                 pattern += "|";
             }
             pattern += s;
+            index++;
         }
         if(isWord){
             pattern += ")\\b";
         }
-        return pattern;
+        return pattern; 
     }
 }
