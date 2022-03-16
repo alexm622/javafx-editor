@@ -65,6 +65,8 @@ public class SceneBuilder {
 
         addEventHandlers(scene);
 
+
+
         return scene;
     }
     
@@ -367,6 +369,7 @@ public class SceneBuilder {
         tp.getSelectionModel().select(tab);
 
         //add the highlighting
+        System.out.println("extension: " + to.getExtension());
         addStyling(ca, to);
 
         //close handler
@@ -406,6 +409,7 @@ public class SceneBuilder {
      * @param to the tab object
      */
     private static void addStyling(CodeArea ca, TabObject to) {
+        System.out.println("adding styling");
         ca.setParagraphGraphicFactory(LineNumberFactory.get(ca));
 
         ExecutorService exe = Executors.newSingleThreadExecutor();
@@ -419,6 +423,7 @@ public class SceneBuilder {
             l = App.languages.get(to.getExtension());
             System.out.println(l.getCss());
         }else{
+            System.out.println("using text");
             l = App.languages.get("txt");
         }
 
@@ -442,7 +447,7 @@ public class SceneBuilder {
         subscriptions.add(cleanupWhenDone);
         ca.getStylesheets().removeAll();
         ca.getStylesheets().addAll(new CodeArea().getStylesheets());
-        ca.getStylesheets().add(l.getCss());
+        ca.getStylesheets().add(new File(l.getCss()).toURI().toString());
     }
     
     /**

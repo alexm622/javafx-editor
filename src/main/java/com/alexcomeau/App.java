@@ -31,6 +31,10 @@ public class App extends Application {
 
         //read the languages
         languages = new LanguageMap(LanguageConfReader.readLanguages()).getLangMap();
+        languages.forEach((k,v) -> {
+            System.out.println(k + " : " + v.getCss());
+
+        });
         
         stage.setTitle("jfx-edit");
         SceneBuilder sb = new SceneBuilder(700, 700);

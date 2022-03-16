@@ -3,7 +3,7 @@
     "extensions":[
         ".java"
     ],
-    "cssFile":"java.css",
+    "cssFile":"./config/style/java.css",
 
     "patternMap":{
         "keyword":["abstract", "continue", "for", "new", "switch", "assert", "default", "goto", "package", "synchronized",

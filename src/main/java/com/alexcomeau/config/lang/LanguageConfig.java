@@ -26,7 +26,14 @@ public class LanguageConfig {
     }
 
     public void setExtensions(String[] extensions) {
-        this.extensions = extensions;
+        String[] newString = new String[extensions.length];
+        int index = 0;
+        for(String s : extensions){
+            s = s.toLowerCase().replace(".", "");
+            newString[index] = s;
+            index++;
+        }
+        this.extensions = newString;
     }
 
     public String getCssFile() {
