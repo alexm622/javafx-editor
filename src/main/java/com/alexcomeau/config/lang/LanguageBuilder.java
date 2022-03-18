@@ -4,6 +4,8 @@ import java.util.regex.Pattern;
 
 import com.alexcomeau.lang.Language;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 public class LanguageBuilder {
     private LanguageConfig lc;
     public LanguageBuilder(LanguageConfig lc){
@@ -40,6 +42,7 @@ public class LanguageBuilder {
             pattern += patternArrayToString(lc.getPatternMap().get(key));
             pattern += ")";
         }
+        System.out.println("built pattern: " + StringEscapeUtils.escapeJava(pattern));
         return Pattern.compile(pattern);
     }
 
@@ -67,6 +70,7 @@ public class LanguageBuilder {
         if(isWord){
             pattern += ")\\b";
         }
+        
         return pattern; 
     }
 }

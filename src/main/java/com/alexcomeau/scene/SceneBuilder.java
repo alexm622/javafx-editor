@@ -447,7 +447,6 @@ public class SceneBuilder {
         subscriptions.add(cleanupWhenDone);
         ca.getStylesheets().removeAll();
         ca.getStylesheets().addAll(new CodeArea().getStylesheets());
-        //TODO so this is adding properly, but for some reason the matching isn't working
         ca.getStylesheets().add(new File(l.getCss()).toURI().toString());
         ca.getStylesheets().forEach(System.out::println);
     }

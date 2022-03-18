@@ -40,8 +40,8 @@ public class App extends Application {
         });
 
         //test to see what the matchers are for each language, for some reason it isn't
-        System.out.println("json matcher: " + StringEscapeUtils.escapeJava(new Java().getPattern().toString()));
-        System.out.println("json matcher: " + StringEscapeUtils.escapeJava(languages.get("java").getPattern().toString()));
+        System.out.println("java matcher: " + StringEscapeUtils.escapeJava(new Java().getPattern().toString()));
+        //System.out.println("json matcher: " + StringEscapeUtils.escapeJava(languages.get("java").getPattern().toString()));
         
         stage.setTitle("jfx-edit");
         SceneBuilder sb = new SceneBuilder(700, 700);

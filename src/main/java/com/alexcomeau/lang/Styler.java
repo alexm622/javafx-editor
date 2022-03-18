@@ -36,7 +36,7 @@ public class Styler {
         ca.setStyleSpans(0, highlighting);
     }
 
-    //TODO this needs to be redone to better accomodate configurable languages
+    //TODO this needs to be redone to better accomodate configurable languages and matching groups
     private StyleSpans<Collection<String>> computeHighlighting(String txt){
         Matcher m = language.getPattern().matcher(txt);
         int lastKwEnd = 0;

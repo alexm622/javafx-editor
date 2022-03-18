@@ -7,7 +7,7 @@ module com.alexcomeau {
     requires transitive javafx.graphics;
     requires transitive javafx.base;
 
-    //this is going to have a warning no matter what because it is out of date
+    //this is going to have a warning no matter what because reactfx is out of date
     requires transitive reactfx;
 
     //include jackson and jackson-databind
