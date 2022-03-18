@@ -31,7 +31,7 @@ public class Config implements Serializable{
 
     public void setThemeFile(String themeFile) {
         if(themeFile == null){
-            //do nothing
+            return;
         }else{
         this.themeFile = themeFile;
         }
@@ -43,7 +43,7 @@ public class Config implements Serializable{
 
     public void setLanguagesFolder(String languagesFolder) {
         if(languagesFolder == null){
-            //do nothing
+            return;
         }else{
             this.languagesFolder = languagesFolder;
         }
@@ -74,8 +74,9 @@ public class Config implements Serializable{
     }
 
     public void setLanguage_configs(String[] language_configs) {
+        //if not initialized then do nothing
         if(language_configs == null || language_configs.length == 0 || language_configs.hashCode() == this.language_configs.hashCode()){
-            //do nothing if empty, or if same as default
+            return;
         }else{
             //strip .json from each element
             for(int i = 0; i < language_configs.length; i++){

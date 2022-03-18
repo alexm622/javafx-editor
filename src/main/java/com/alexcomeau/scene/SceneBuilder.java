@@ -77,9 +77,7 @@ public class SceneBuilder {
     private void addKeyEventHandlers(Scene scene){
         scene.setOnKeyPressed(handler->{
             if(KeyCombinations.SAVE.match(handler)){
-                if (tabs.size() == 0) {
-                        
-                } else {
+                if (tabs.size() != 0) {
                     
                     tabs.get(tp.getSelectionModel().getSelectedIndex())
                             .setText(tabs.get(tp.getSelectionModel().getSelectedIndex()).getCa().getText());

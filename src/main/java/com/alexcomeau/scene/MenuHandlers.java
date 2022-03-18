@@ -94,7 +94,7 @@ public class MenuHandlers {
                     save(to, e);
                 }
             } else if (type == ButtonType.NO) {
-               
+                return;
             } else if (type == ButtonType.CANCEL) {
                 e.consume();
             }
