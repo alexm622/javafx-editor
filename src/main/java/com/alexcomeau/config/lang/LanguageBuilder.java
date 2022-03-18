@@ -43,6 +43,9 @@ public class LanguageBuilder {
             pattern += ")";
         }
         System.out.println("built pattern: " + StringEscapeUtils.escapeJava(pattern));
+        //print stack trace to see what's going on
+        new Exception().printStackTrace();
+        
         return Pattern.compile(pattern);
     }
 

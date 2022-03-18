@@ -63,7 +63,7 @@ public class SceneBuilder {
         scene = new Scene(vbox, width, height);
         vbox.getChildren().addAll(buildMenuBar(), tp);
 
-        addEventHandlers(scene);
+        addKeyEventHandlers(scene);
 
 
 
@@ -74,7 +74,7 @@ public class SceneBuilder {
      * add event handlers to the scene
      * @param scene the scene to add the event handlers to
      */
-    private void addEventHandlers(Scene scene){
+    private void addKeyEventHandlers(Scene scene){
         scene.setOnKeyPressed(handler->{
             if(KeyCombinations.SAVE.match(handler)){
                 if (tabs.size() == 0) {
@@ -309,7 +309,6 @@ public class SceneBuilder {
         ca.setPrefHeight(scene.getHeight());
         ca.setPrefWidth(scene.getWidth());
         Tab tab = new Tab(title, ca);
-        addStyling(ca, to);
         int index = tp.getTabs().size() - 1;
         tab.onCloseRequestProperty().set(event -> {
             MenuHandlers.closeTab(ca, to, event);
@@ -325,6 +324,8 @@ public class SceneBuilder {
         });
         tp.getTabs().add(tab);
         tp.getSelectionModel().select(tab);
+        addStyling(ca, to);
+       
     }
 
     /**
@@ -388,6 +389,7 @@ public class SceneBuilder {
         });
 
 
+
         
     }
 
@@ -445,10 +447,15 @@ public class SceneBuilder {
                 })
                 .subscribe(s::applyHighlighting);
         subscriptions.add(cleanupWhenDone);
+        
         ca.getStylesheets().removeAll();
         ca.getStylesheets().addAll(new CodeArea().getStylesheets());
         ca.getStylesheets().add(new File(l.getCss()).toURI().toString());
-        ca.getStylesheets().forEach(System.out::println);
+        
+        //trigger the highlighting subscription
+        //this is a really gross way of doing it but it still triggers the event which is what we want
+        ca.replaceText(0, 0, " ");
+        ca.replaceText(0, 1, "");
     }
     
     /**
