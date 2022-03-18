@@ -25,6 +25,12 @@ module com.alexcomeau {
     opens com.alexcomeau.config;
     opens com.alexcomeau.lang;
 
+    //apache commons
+    requires transitive org.apache.commons.lang3;
+    requires transitive org.apache.commons.text;
+
+
+
 
 
 
