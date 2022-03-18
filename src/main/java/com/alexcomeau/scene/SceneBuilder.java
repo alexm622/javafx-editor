@@ -146,10 +146,10 @@ public class SceneBuilder {
                 }
             }
             else if(KeyCombinations.FIND.match(handler)){
-                //find only
+                //TODO find only
             }
             else if(KeyCombinations.REPLACE.match(handler)){
-                //this will be find and replace
+                //TODO this will be find and replace
             }
             else if(KeyCombinations.COMMENT.match(handler)){
                 //TODO implement comment
@@ -165,22 +165,22 @@ public class SceneBuilder {
                 */
             }
             else if(KeyCombinations.RUN.match(handler)){
-                //same as compile
+                //TODO same as compile
             }
             else if(KeyCombinations.DEBUG.match(handler)){
-                //same as compile
+                //TODO same as compile
             }
             else if(KeyCombinations.STOP.match(handler)){
-                //same as compile
+                //TODO same as compile
             }
             else if(KeyCombinations.STEP.match(handler)){
-                //same as compile
+                //TODO same as compile
             }
             else if(KeyCombinations.STEP_OVER.match(handler)){
-                //same as compile
+                //TODO same as compile
             }
             else if(KeyCombinations.STEP_OUT.match(handler)){
-                //same as compile
+                //TODO same as compile
             }
         });
     }
