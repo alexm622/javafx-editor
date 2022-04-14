@@ -1,5 +1,4 @@
 package com.alexcomeau;
-
 public class LaunchHelper {
     /**
      * this is used as an entry point for the fat jar file

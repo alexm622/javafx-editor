@@ -130,6 +130,8 @@ public class MenuHandlers {
             } else {
                 to.setExtension(f.getName().substring(f.getName().lastIndexOf(".") + 1));
             }
+            System.out.printf("Extension %s\n", to.getExtension());
+
             SceneBuilder.reapplyStyling(to);
         } catch (Exception ee) {
             if(e == null){

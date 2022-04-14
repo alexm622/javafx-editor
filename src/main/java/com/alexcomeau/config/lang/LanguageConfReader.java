@@ -14,6 +14,7 @@ public class LanguageConfReader {
         ArrayList<Language> languages = new ArrayList<Language>();
         ArrayList<LanguageConfig> language_configs = new ArrayList<LanguageConfig>();
         for(String path : App.config.getLanguage_configs()){
+            System.out.println("Reading language configs from " + path);
             language_configs.add(readLanguageConfig("config/" + App.config.getLanguagesFolder() + "/" + path));
         }
 

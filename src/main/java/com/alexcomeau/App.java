@@ -35,7 +35,7 @@ public class App extends Application {
         //read the languages
         languages = new LanguageMap(LanguageConfReader.readLanguages()).getLangMap();
         languages.forEach((k,v) -> {
-            System.out.println(k + " : " + v.getCss());
+            System.out.println("language" + k + " : " + v.getCss());
 
         });
 
